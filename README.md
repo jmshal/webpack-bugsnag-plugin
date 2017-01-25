@@ -4,7 +4,13 @@
 
 This module contains webpack plugins to help ease Bugsnag into your webpack build process.
 
-## Example
+## Installation
+
+```sh
+$ npm i --save webpack-bugsnag-plugin
+```
+
+## Usage
 
 ```js
 const {
