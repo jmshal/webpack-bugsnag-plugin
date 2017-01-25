@@ -1,3 +1,5 @@
+> ⚠️ This project is currently a work in progress. Please proceed with caution.
+
 # Webpack Bugsnag Plugin(s)
 
 This module contains webpack plugins to help ease Bugsnag into your webpack build process.
