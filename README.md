@@ -87,3 +87,7 @@ The source control revision id for the code you are deploying. (Required when `r
 **appVersion**
 
 The app version of the code you are currently deploying. Only set this if you tag your releases with [semantic version numbers](http://semver.org/) and deploy infrequently. (Optional.)
+
+## License
+
+MIT License ❤️
