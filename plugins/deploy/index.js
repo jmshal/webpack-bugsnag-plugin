@@ -120,7 +120,6 @@ Object.assign(BugsnagDeployPlugin.prototype, {
    * @returns {Promise<*>}
    */
   sendRequest(params) {
-    console.log(params);
     return request({
       method: 'POST',
       uri: BUGSNAG_DEPLOY_URL,
