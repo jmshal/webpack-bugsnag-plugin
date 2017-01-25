@@ -40,6 +40,8 @@ module.exports = {
 
 Check out https://docs.bugsnag.com/api/deploy-tracking/ for more information about Bugsnag deploy tracking.
 
+This plugin is currently usable, however it lacks automatically setting some of the following options. In a future release, this plugin will automatically extract a lot of these options automatically from the local git repository (if one exists), and the root `package.json`.
+
 #### Options
 
 **apiKey**
