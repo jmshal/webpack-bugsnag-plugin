@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "webpack"
+  },
+  "dependencies": {
+    "webpack": "^1.14.0"
+  }
+}
