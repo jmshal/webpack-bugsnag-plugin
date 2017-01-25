@@ -98,13 +98,15 @@ Object.assign(BugsnagDeployPlugin.prototype, {
    */
   getAutomaticDeployOptionsFromPackageJSON(compilation) {
     return (
-      pkgUp().then(path => {
-        const package = require(path);
-        return {
-          appVersion: package.version || null,
-          repository: package.repository ? package.repository.url : null,
-        };
-      })
+      pkgUp()
+        .then(path => {
+          const package = require(path);
+          return {
+            appVersion: package.version || null,
+            repository: package.repository ? package.repository.url : null,
+          };
+        })
+        .catch(() => {}) // There may not be a package.json
     );
   },
 
@@ -139,11 +141,12 @@ Object.assign(BugsnagDeployPlugin.prototype, {
         ]))
         .then(([commit, origin, branch]) => {
           return {
-            branch: branch.toString(),
+            branch: branch.toString().replace('refs/heads/', ''), // TODO Learn what's correct in this case
             revision: commit.sha(),
             repository: this.formatRemoteUrl(origin.url()),
           };
         })
+        .catch(() => {}) // TODO Handle errors & no repository properly
     );
   },
 
