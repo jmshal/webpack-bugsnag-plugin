@@ -1,4 +1,7 @@
 const request = require('request-promise-native');
+const pkgUp = require('pkg-up');
+const { Repository } = require('nodegit');
+const url = require('url');
 
 const USER_AGENT = (
   'WebpackBugsnagDeployPlugin/' +
@@ -75,10 +78,73 @@ Object.assign(BugsnagDeployPlugin.prototype, {
    * The resolved object contains only the overrides - which are merged with the options before
    * sending the payload to the endpoint.
    * 
+   * @param {?} compilation
    * @returns {Promise<object>}
    */
-  getAutomaticDeployOptions() {
-    return Promise.resolve({}); // TODO Not implemented
+  getAutomaticDeployOptions(compilation) {
+    return Promise.all([
+      this.getAutomaticDeployOptionsFromPackageJSON(compilation),
+      this.getAutomaticDeployOptionsFromGit(compilation),
+    ]).then(([packageJSON, git]) => {
+      return Object.assign({}, packageJSON, git);
+    });
+  },
+
+  /**
+   * Extracts some defaults from the closest package.json.
+   * 
+   * @param {?} compilation
+   * @returns {Promise<object>}
+   */
+  getAutomaticDeployOptionsFromPackageJSON(compilation) {
+    return (
+      pkgUp().then(path => {
+        const package = require(path);
+        return {
+          appVersion: package.version || null,
+          repository: package.repository ? package.repository.url : null,
+        };
+      })
+    );
+  },
+
+  /**
+   * Formats a remote URL so it does not contain any auth.
+   * 
+   * @param {string} remoteUrl
+   * @returns {string}
+   */
+  formatRemoteUrl(remoteUrl) {
+    const parsed = url.parse(remoteUrl);
+    parsed.auth = null;
+    const formatted = url.format(parsed);
+    return formatted;
+  },
+
+  /**
+   * Extracts some defaults from the closest package.json.
+   * 
+   * @param {?} compilation
+   * @returns {Promise<object>}
+   */
+  getAutomaticDeployOptionsFromGit(compilation) {
+    const context = compilation.compiler.options.context;
+    return (
+      Repository.discover(context, 10, '/')
+        .then(buf => Repository.open(buf.toString()))
+        .then(repo => Promise.all([
+          repo.getHeadCommit(),
+          repo.getRemote('origin'),
+          repo.getCurrentBranch(),
+        ]))
+        .then(([commit, origin, branch]) => {
+          return {
+            branch: branch.toString(),
+            revision: commit.sha(),
+            repository: this.formatRemoteUrl(origin.url()),
+          };
+        })
+    );
   },
 
   /**
@@ -103,12 +169,19 @@ Object.assign(BugsnagDeployPlugin.prototype, {
    * 
    * @see {getAutomaticDeployOptions}
    * @see {stripEmptyOptions}
+   * @param {?} compilation
    * @returns {Promise<object>}
    */
-  getRequestParams() {
+  getRequestParams(compilation) {
     return (
-      this.getAutomaticDeployOptions()
-        .then(options => Object.assign({}, this.options, options))
+      this.getAutomaticDeployOptions(compilation)
+        .then(options => {
+          return Object.assign(
+            {},
+            options, // Merge first as they're used as defaults
+            this.stripEmptyOptions(this.options) // Only merge the set options
+          );
+        })
         .then(options => this.stripEmptyOptions(options))
     );
   },
@@ -136,11 +209,12 @@ Object.assign(BugsnagDeployPlugin.prototype, {
    * 
    * @see {getRequestParams}
    * @see {sendRequest}
+   * @param {?} compilation
    * @returns {Promise<null>}
    */
-  deploy() {
+  deploy(compilation) {
     return (
-      this.getRequestParams()
+      this.getRequestParams(compilation)
         .then(options => this.sendRequest(options))
         .then(() => null)
     );

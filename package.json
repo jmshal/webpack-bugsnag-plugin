@@ -23,6 +23,8 @@
     "url": "https://github.com/jacobmarshall/webpack-bugsnag-plugin.git"
   },
   "dependencies": {
+    "nodegit": "^0.16.0",
+    "pkg-up": "^1.0.0",
     "request": "^2.79.0",
     "request-promise-native": "^1.0.3"
   }
