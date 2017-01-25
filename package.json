@@ -1,9 +1,28 @@
 {
   "name": "webpack-bugsnag-plugin",
   "version": "0.0.0",
+  "keywords": [
+    "webpack",
+    "bugsnag",
+    "deploy",
+    "source-maps"
+  ],
+  "homepage": "https://github.com/jacobmarshall/webpack-bugsnag-plugin",
+  "bugs": {
+    "url": "https://github.com/jacobmarshall/webpack-bugsnag-plugin/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Jacob Marshall",
+    "email": "git@jacobmarshall.co",
+    "url": "https://j.msh.al"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacobmarshall/webpack-bugsnag-plugin.git"
+  },
   "dependencies": {
     "request": "^2.79.0",
     "request-promise-native": "^1.0.3"
-  },
-  "license": "MIT"
+  }
 }
