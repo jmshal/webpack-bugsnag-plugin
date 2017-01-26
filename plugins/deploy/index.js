@@ -1,7 +1,11 @@
 const request = require('request-promise-native');
 const pkgUp = require('pkg-up');
-const { Repository } = require('nodegit');
 const url = require('url');
+const {
+  getCurrentBranch,
+  getLatestCommitHash,
+  getOriginRemoteUrl,
+} = require('./git');
 
 const USER_AGENT = (
   'WebpackBugsnagDeployPlugin/' +
@@ -130,23 +134,22 @@ Object.assign(BugsnagDeployPlugin.prototype, {
    * @returns {Promise<object>}
    */
   getAutomaticDeployOptionsFromGit(compilation) {
-    const context = compilation.compiler.options.context;
+    const path = compilation.compiler.options.context;
     return (
-      Repository.discover(context, 10, '/')
-        .then(buf => Repository.open(buf.toString()))
-        .then(repo => Promise.all([
-          repo.getHeadCommit(),
-          repo.getRemote('origin'),
-          repo.getCurrentBranch(),
-        ]))
-        .then(([commit, origin, branch]) => {
+      Promise
+        .all([
+          getLatestCommitHash({ path }),
+          getOriginRemoteUrl({ path }),
+          getCurrentBranch({ path }),
+        ])
+        .then(([revision, repository, branch]) => {
           return {
-            branch: branch.toString().replace('refs/heads/', ''), // TODO Learn what's correct in this case
-            revision: commit.sha(),
-            repository: this.formatRemoteUrl(origin.url()),
+            branch,
+            revision,
+            repository: this.formatRemoteUrl(repository),
           };
         })
-        .catch(() => {}) // TODO Handle errors & no repository properly
+        .catch(() => null)
     );
   },
 
