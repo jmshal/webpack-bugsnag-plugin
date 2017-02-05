@@ -44,13 +44,29 @@ module.exports = {
 
 ### BugsnagSourceMapPlugin(options)
 
-The `BugsnagSourceMapPlugin` plugin is currently not implemented - but it is coming soon.
+Check out https://docs.bugsnag.com/api/js-source-map-upload/ for more information about uploading sourcemaps to Bugsnag.
+
+The `BugsnagSourceMapPlugin` plugin automatically uploads your bundle's sourcemaps to Bugsnag.
+
+#### Options
+
+**apiKey**
+
+The Bugsnag API key that is used in your app.
+
+**appVersion** (optional)
+
+The version of the app that the source map applies to (as set in the [JavaScript notifier](https://docs.bugsnag.com/platforms/browsers/configuration-options/#appversion)). If the version isn’t set in the notifier this should be omitted (and the most recent upload will be used for error events).
+
+**overwrite** (optional)
+
+Specifies whether to overwrite any existing version of the files for this minified url and app version. Defaults to false.
 
 ### BugsnagDeployPlugin(options)
 
 Check out https://docs.bugsnag.com/api/deploy-tracking/ for more information about Bugsnag deploy tracking.
 
-The `BugsnagDeployPlugin` plugin automatically populates the options with defaults from your `package.json` (for the version, and repository url), and `.git` (for the repository url, branch name, and revision).
+The `BugsnagDeployPlugin` plugin automatically pushes deploy events to Bugsnag when your webpack bundle builds successfully.
 
 #### Options
 
@@ -58,15 +74,15 @@ The `BugsnagDeployPlugin` plugin automatically populates the options with defaul
 
 The API Key associated with the project. Informs Bugsnag which project has been deployed. This is the only required field.
 
-**releaseStage**
+**releaseStage** (optional)
 
 The release stage (eg, production, staging) currently being deployed. (Optional, defaults to `production`.)
 
-**repository**
+**repository** (optional)
 
 The URL of the repository containing the source code being deployed. We can use this to link directly to your source code on [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org/) or [GitLab](https://gitlab.com/) from the Bugsnag dashboard. (Required for source code integration.)
 
-**provider**
+**provider** (optional)
 
 The name of your source control provider. Required when repository is supplied and only for on-premise services (for cloud services the provider will be derived from the URL.)
 
@@ -76,15 +92,15 @@ When supplied must be one of:
 - `bitbucket-server` for [Bitbucket Server](https://www.atlassian.com/software/bitbucket/server) (formerly Stash)
 - `gitlab-onpremise` for [GitLab CE](https://about.gitlab.com/downloads/) or [GitLab Enterprise](https://about.gitlab.com/downloads-ee/)
 
-**branch**
+**branch** (optional)
 
 The source control branch from which you are deploying the code. (Optional, only relevant when `repository` is supplied.)
 
-**revision**
+**revision** (optional)
 
 The source control revision id for the code you are deploying. (Required when `repository` is supplied.)
 
-**appVersion**
+**appVersion** (optional)
 
 The app version of the code you are currently deploying. Only set this if you tag your releases with [semantic version numbers](http://semver.org/) and deploy infrequently. (Optional.)
 
