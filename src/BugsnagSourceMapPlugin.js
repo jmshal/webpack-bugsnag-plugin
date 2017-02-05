@@ -1,6 +1,6 @@
 import path from 'path';
 import CommonBugsnagPlugin from './helpers/CommonBugsnagPlugin';
-import { upload } from 'bugsnag-sourcemap';
+import { upload } from 'bugsnag-sourcemaps';
 
 class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
   constructor({
