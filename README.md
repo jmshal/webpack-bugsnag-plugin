@@ -54,6 +54,10 @@ The `BugsnagSourceMapPlugin` plugin automatically uploads your bundle's sourcema
 
 The Bugsnag API key that is used in your app.
 
+**publicPath** (optional)
+
+The url of the minified JavaScript file that the source map relates to. Asterisks can be used as a [wildcard](https://docs.bugsnag.com/api/js-source-map-upload/#do-you-support-partial-matching-wildcards-for-the-minified-url).
+
 **appVersion** (optional)
 
 The version of the app that the source map applies to (as set in the [JavaScript notifier](https://docs.bugsnag.com/platforms/browsers/configuration-options/#appversion)). If the version isn’t set in the notifier this should be omitted (and the most recent upload will be used for error events).
