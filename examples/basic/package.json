@@ -1,4 +1,6 @@
 {
+  "name": "example",
+  "version": "1.2.4",
   "scripts": {
     "start": "webpack"
   },

@@ -32,7 +32,7 @@ module.exports = {
     }),
     new BugsnagSourceMapPlugin({
       apiKey: 'e48e13207341b6bffb7fb1622282247b', // required
-      publicUrl: 'https://s3.amazonaws.com/my-app', // required
+      publicPath: 'http*://*example.com/build', // or `output.publicPath`
       appVersion: '1.7.0',
       override: true
     })
