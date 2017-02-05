@@ -64,8 +64,8 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
   }
 
   getUploadOptions(compilation) {
-    const { apiKey, appVersion } = this.options;
-    const uploadOptions = { apiKey, appVersion };
+    const { apiKey, appVersion, override } = this.options;
+    const uploadOptions = { apiKey, appVersion, override };
     if (appVersion) {
       return Promise.resolve(uploadOptions);
     } else {
