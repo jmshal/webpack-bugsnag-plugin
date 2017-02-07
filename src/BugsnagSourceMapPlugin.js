@@ -7,14 +7,14 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
     apiKey = null,
     publicPath = null,
     appVersion = null,
-    override = false,
+    overwrite = false,
   }) {
     super();
     this.options = {
       apiKey,
       publicPath,
       appVersion,
-      override,
+      overwrite,
     };
     this.validateOptions();
   }
@@ -64,8 +64,8 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
   }
 
   getUploadOptions(compilation) {
-    const { apiKey, appVersion, override } = this.options;
-    const uploadOptions = { apiKey, appVersion, override };
+    const { apiKey, appVersion, overwrite } = this.options;
+    const uploadOptions = { apiKey, appVersion, overwrite };
     if (appVersion) {
       return Promise.resolve(uploadOptions);
     } else {

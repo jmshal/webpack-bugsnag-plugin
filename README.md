@@ -34,7 +34,7 @@ module.exports = {
       apiKey: 'e48e13207341b6bffb7fb1622282247b', // required
       publicPath: 'http*://*example.com/build', // or `output.publicPath`
       appVersion: '1.7.0',
-      override: true
+      overwrite: true
     })
   ]
 };
