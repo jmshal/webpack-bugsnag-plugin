@@ -66,15 +66,15 @@ The `BugsnagDeployPlugin` plugin automatically pushes deploy events to Bugsnag w
 
 ### Options
 
-|Option      |Description                                                                                                                                                                 |Required|Default |
-|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|------- |
-|apiKey      |Your Bugsnag project API key. You can find this key from within your project's settings page.                                                                               |*       |n/a     |
-|releaseStage|The environment in which the deployed occurred (eg. `production`, `testing`, `development`).                                                                                |        |n/a     |
-|repository  |The Git repository which contains the source code being deployed.                                                                                                           |        |**      |
-|provider    |If your repository is hosted on a on-premise solution, you will need to supply the provider (eg. `github-enterprise`, `bitbucket-server`, `gitlab-onpremise`).              |        |        |
-|branch      |The source control branch from which you are deploying the code. Only relevant when `repository` is supplied.                                                               |        |**      |
-|revision    |The source control revision id for the code you are deploying. Required when `repository` is supplied.                                                                      |        |**      |
-|appVersion  |The app version of the code you are currently deploying. Only set this if you tag your releases with [semantic version numbers](http://semver.org/) and deploy infrequently.|        |**      |
+|Option      |Description                                                                                                                                                                 |Required|Default     |
+|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|------------|
+|apiKey      |Your Bugsnag project API key. You can find this key from within your project's settings page.                                                                               |*       |n/a         |
+|releaseStage|The environment in which the deployed occurred (eg. `production`, `testing`, `development`).                                                                                |        |`production`|
+|repository  |The Git repository which contains the source code being deployed.                                                                                                           |        |**          |
+|provider    |If your repository is hosted on a on-premise solution, you will need to supply the provider (eg. `github-enterprise`, `bitbucket-server`, `gitlab-onpremise`).              |        |            |
+|branch      |The source control branch from which you are deploying the code. Only relevant when `repository` is supplied.                                                               |        |**          |
+|revision    |The source control revision id for the code you are deploying. Required when `repository` is supplied.                                                                      |        |**          |
+|appVersion  |The app version of the code you are currently deploying. Only set this if you tag your releases with [semantic version numbers](http://semver.org/) and deploy infrequently.|        |**          |
 
 __** These options automatically default to information within your project's `package.json` file, or your local Git repository.__
 
