@@ -1,10 +1,14 @@
-> ⚠️ This project is currently a work in progress. Please proceed with caution.
-
 # Webpack Bugsnag Plugin(s)
+
+![Latest version](https://img.shields.io/npm/v/webpack-bugsnag-plugin.svg)
+![Dependencies](https://david-dm.org/jacobmarshall/webpack-bugsnag-plugin.svg)
+![Total downloads](https://img.shields.io/npm/dt/webpack-bugsnag-plugin.svg)
 
 This module contains webpack plugins to help ease Bugsnag into your webpack build process.
 
-## Installation
+## Install
+
+The Bugsnag plugins are available on npm, you can install them into your project by running the following command in the root of your project.
 
 ```sh
 $ npm i --save webpack-bugsnag-plugin
@@ -19,94 +23,60 @@ const {
 } = require('webpack-bugsnag-plugin');
 
 module.exports = {
+  devtool: 'source-map',
   // ...
   plugins: [
     // WebpackS3Plugin(...)
     new BugsnagDeployPlugin({
-      apiKey: 'e48e13207341b6bffb7fb1622282247b', // required
+      apiKey: 'e48e13207341b6bffb7fb1622282247b',
       releaseStage: 'production',
-      repository: 'https://github.com/jacobmarshall/webpack-bugsnag-plugin.git',
-      branch: 'master',
-      revision: '9fc759f7c5ecdab9d13a23ac321a106d9f1dc913', 
-      appVersion: '1.7.0'
+      appVersion: '1.7.0',
     }),
     new BugsnagSourceMapPlugin({
-      apiKey: 'e48e13207341b6bffb7fb1622282247b', // required
-      publicPath: 'http*://*example.com/build', // or `output.publicPath`
+      apiKey: 'e48e13207341b6bffb7fb1622282247b',
+      publicPath: 'http*://*example.com/build',
       appVersion: '1.7.0',
-      overwrite: true
-    })
-  ]
+    }),
+  ],
 };
 ```
 
-## Plugins
-
-### BugsnagSourceMapPlugin(options)
+## BugsnagSourceMapPlugin
 
 Check out https://docs.bugsnag.com/api/js-source-map-upload/ for more information about uploading sourcemaps to Bugsnag.
 
-The `BugsnagSourceMapPlugin` plugin automatically uploads your bundle's sourcemaps to Bugsnag.
+The `BugsnagSourceMapPlugin` plugin automatically uploads your bundle sourcemaps to Bugsnag, so when errors occur within your application you see the original source code right within your Bugsnag dashboard.
 
-#### Options
+### Options
 
-**apiKey**
+|Option    |Description                                                                                                                                                                                                                              |Required|Default            |
+|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------|
+|apiKey    |Your Bugsnag project API key. You can find this key from within your project's settings page.                                                                                                                                            |*       |n/a                |
+|publicPath|The url of your minified bundle(s). This option supports wildcards (eg. `http*://example.com` if your bundle is served from HTTP & HTTPS). You can omit this option if you have specified the `output.publicPath` in your webpack config.|*       |`output.publicPath`|
+|appVersion|The version of your app your bundle relates to. This option is automatically calculated from your `package.json` if one exists.                                                                                                          |        |**                 |
+|overwrite |If you have already pushed sourcemap files to Bugsnag for a particular version of your app, you can pass this option to replace it.                                                                                                      |        |`false`            |
 
-The Bugsnag API key that is used in your app.
+__** These options automatically default to information within your project's `package.json` file, or your local Git repository.__
 
-**publicPath** (optional)
-
-The url of the minified JavaScript file that the source map relates to. Asterisks can be used as a [wildcard](https://docs.bugsnag.com/api/js-source-map-upload/#do-you-support-partial-matching-wildcards-for-the-minified-url).
-
-**appVersion** (optional)
-
-The version of the app that the source map applies to (as set in the [JavaScript notifier](https://docs.bugsnag.com/platforms/browsers/configuration-options/#appversion)). If the version isn’t set in the notifier this should be omitted (and the most recent upload will be used for error events).
-
-**overwrite** (optional)
-
-Specifies whether to overwrite any existing version of the files for this minified url and app version. Defaults to false.
-
-### BugsnagDeployPlugin(options)
+## BugsnagDeployPlugin
 
 Check out https://docs.bugsnag.com/api/deploy-tracking/ for more information about Bugsnag deploy tracking.
 
-The `BugsnagDeployPlugin` plugin automatically pushes deploy events to Bugsnag when your webpack bundle builds successfully.
+The `BugsnagDeployPlugin` plugin automatically pushes deploy events to Bugsnag when your webpack bundle builds successfully. This makes it easy from your Bugsnag dashboard when you deployed changes to your app, and the impact it had on the number of errors have occurred since.
 
-#### Options
+### Options
 
-**apiKey**
+|Option      |Description                                                                                                                                                                 |Required|Default |
+|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|------- |
+|apiKey      |Your Bugsnag project API key. You can find this key from within your project's settings page.                                                                               |*       |n/a     |
+|releaseStage|The environment in which the deployed occurred (eg. `production`, `testing`, `development`).                                                                                |        |n/a     |
+|repository  |The Git repository which contains the source code being deployed.                                                                                                           |        |**      |
+|provider    |If your repository is hosted on a on-premise solution, you will need to supply the provider (eg. `github-enterprise`, `bitbucket-server`, `gitlab-onpremise`).              |        |        |
+|branch      |The source control branch from which you are deploying the code. Only relevant when `repository` is supplied.                                                               |        |**      |
+|revision    |The source control revision id for the code you are deploying. Required when `repository` is supplied.                                                                      |        |**      |
+|appVersion  |The app version of the code you are currently deploying. Only set this if you tag your releases with [semantic version numbers](http://semver.org/) and deploy infrequently.|        |**      |
 
-The API Key associated with the project. Informs Bugsnag which project has been deployed. This is the only required field.
-
-**releaseStage** (optional)
-
-The release stage (eg, production, staging) currently being deployed. (Optional, defaults to `production`.)
-
-**repository** (optional)
-
-The URL of the repository containing the source code being deployed. We can use this to link directly to your source code on [GitHub](https://github.com/), [Bitbucket](https://bitbucket.org/) or [GitLab](https://gitlab.com/) from the Bugsnag dashboard. (Required for source code integration.)
-
-**provider** (optional)
-
-The name of your source control provider. Required when repository is supplied and only for on-premise services (for cloud services the provider will be derived from the URL.)
-
-When supplied must be one of:
-
-- `github-enterprise` for [GitHub Enterprise](https://enterprise.github.com/)
-- `bitbucket-server` for [Bitbucket Server](https://www.atlassian.com/software/bitbucket/server) (formerly Stash)
-- `gitlab-onpremise` for [GitLab CE](https://about.gitlab.com/downloads/) or [GitLab Enterprise](https://about.gitlab.com/downloads-ee/)
-
-**branch** (optional)
-
-The source control branch from which you are deploying the code. (Optional, only relevant when `repository` is supplied.)
-
-**revision** (optional)
-
-The source control revision id for the code you are deploying. (Required when `repository` is supplied.)
-
-**appVersion** (optional)
-
-The app version of the code you are currently deploying. Only set this if you tag your releases with [semantic version numbers](http://semver.org/) and deploy infrequently. (Optional.)
+__** These options automatically default to information within your project's `package.json` file, or your local Git repository.__
 
 ## License
 
