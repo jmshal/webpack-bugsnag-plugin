@@ -49,12 +49,12 @@ The `BugsnagSourceMapPlugin` plugin automatically uploads your bundle sourcemaps
 
 ### Options
 
-|Option    |Description                                                                                                                                                                                                                              |Required|Default            |
-|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------|
-|apiKey    |Your Bugsnag project API key. You can find this key from within your project's settings page.                                                                                                                                            |*       |n/a                |
-|publicPath|The url of your minified bundle(s). This option supports wildcards (eg. `http*://example.com` if your bundle is served from HTTP & HTTPS). You can omit this option if you have specified the `output.publicPath` in your webpack config.|*       |`output.publicPath`|
-|appVersion|The version of your app your bundle relates to. This option is automatically calculated from your `package.json` if one exists.                                                                                                          |        |**                 |
-|overwrite |If you have already pushed sourcemap files to Bugsnag for a particular version of your app, you can pass this option to replace it.                                                                                                      |        |`false`            |
+|Option    |Description                                                                                                                               |Required|Default            |
+|----------|------------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------|
+|apiKey    |Your Bugsnag project API key. You can find this key from within your project's settings page.                                             |*       |n/a                |
+|publicPath|The url of your minified bundle(s). This option supports wildcards (eg. `http*://example.com` if your bundle is served from HTTP & HTTPS).|*       |`output.publicPath`|
+|appVersion|The version of your app your bundle relates to. This option is automatically calculated from your `package.json` if one exists.           |        |**                 |
+|overwrite |If you have already pushed sourcemap files to Bugsnag for a particular version of your app, you can pass this option to replace it.       |        |`false`            |
 
 __** These options automatically default to information within your project's `package.json` file, or your local Git repository.__
 
