@@ -11,7 +11,7 @@ This module contains webpack plugins to help ease Bugsnag into your webpack buil
 The Bugsnag plugins are available on npm, you can install them into your project by running the following command in the root of your project.
 
 ```sh
-$ npm i --save webpack-bugsnag-plugin
+$ npm i --save-dev webpack-bugsnag-plugin
 ```
 
 ## Usage

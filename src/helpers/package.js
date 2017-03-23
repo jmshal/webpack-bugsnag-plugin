@@ -1,4 +1,7 @@
 import pkgUp from 'pkg-up';
+import {
+  getSafeRepositoryUrl,
+} from './git';
 
 const REPOSITORY_STRING_REGEX = /((gist|bitbucket|gitlab):)?(\w+)\/(\w+)/;
 
