@@ -49,12 +49,13 @@ The `BugsnagSourceMapPlugin` plugin automatically uploads your bundle sourcemaps
 
 ### Options
 
-|Option    |Description                                                                                                                               |Required|Default            |
-|----------|------------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------|
-|apiKey    |Your Bugsnag project API key. You can find this key from within your project's settings page.                                             |*       |n/a                |
-|publicPath|The url of your minified bundle(s). This option supports wildcards (eg. `http*://example.com` if your bundle is served from HTTP & HTTPS).|*       |`output.publicPath`|
-|appVersion|The version of your app your bundle relates to. This option is automatically calculated from your `package.json` if one exists.           |        |**                 |
-|overwrite |If you have already pushed sourcemap files to Bugsnag for a particular version of your app, you can pass this option to replace it.       |        |`false`            |
+|Option    |Description                                                                                                                               |Required|Default                     |
+|----------|------------------------------------------------------------------------------------------------------------------------------------------|--------|----------------------------|
+|apiKey    |Your Bugsnag project API key. You can find this key from within your project's settings page.                                             |*       |n/a                         |
+|publicPath|The url of your minified bundle(s). This option supports wildcards (eg. `http*://example.com` if your bundle is served from HTTP & HTTPS).|*       |`output.publicPath`         |
+|appVersion|The version of your app your bundle relates to. This option is automatically calculated from your `package.json` if one exists.           |        |**                          |
+|overwrite |If you have already pushed sourcemap files to Bugsnag for a particular version of your app, you can pass this option to replace it.       |        |`false`                     |
+|endpoint  |For Bugsnag Enterprise, this is your custom endpoint to send sourcemaps to. Omit this option if you're not using Bugsnag Enterprise.      |        |"https://upload.bugsnag.com"|
 
 __** These options automatically default to information within your project's `package.json` file, or your local Git repository.__
 
