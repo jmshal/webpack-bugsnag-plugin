@@ -8,6 +8,7 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
     publicPath = null,
     appVersion = null,
     overwrite = false,
+    endpoint = 'https://upload.bugsnag.com',
   }) {
     super();
     this.options = {
@@ -15,6 +16,7 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
       publicPath,
       appVersion,
       overwrite,
+      endpoint,
     };
     this.validateOptions();
   }
@@ -64,8 +66,8 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
   }
 
   getUploadOptions(compilation) {
-    const { apiKey, appVersion, overwrite } = this.options;
-    const uploadOptions = { apiKey, appVersion, overwrite };
+    const { apiKey, appVersion, overwrite, endpoint } = this.options;
+    const uploadOptions = { apiKey, appVersion, overwrite, endpoint };
     if (appVersion) {
       return Promise.resolve(uploadOptions);
     } else {
