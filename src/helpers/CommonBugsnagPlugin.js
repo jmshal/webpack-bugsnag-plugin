@@ -17,7 +17,7 @@ class CommonBugsnagPlugin {
    */
   validateOptions() {
     const { apiKey } = this.options;
-    if (!apiKey || apiKey.length !== 32) {
+    if (!apiKey) {
       throw new Error('You must provide your Bugsnag API key to the BugsnagPlugin.');
     }
   }
