@@ -26,11 +26,11 @@
   "scripts": {
     "start": "npm run build -- --watch",
     "build": "babel src -d lib",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "bugsnag-sourcemaps": "^0.0.7",
-    "pkg-up": "^1.0.0",
+    "bugsnag-sourcemaps": "^1.0.1",
+    "pkg-up": "1.0.0",
     "request": "^2.79.0",
     "request-promise-native": "^1.0.3"
   },
