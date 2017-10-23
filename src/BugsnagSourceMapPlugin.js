@@ -48,6 +48,8 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
           file: path.resolve(outputPath, file),
           sourceMap: path.resolve(outputPath, sourceMap),
         });
+      } else {
+        console.log('webpack-bugsnag-plugin: no sourcemap found for', file);
       }
     });
 
@@ -71,14 +73,15 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
 
   uploadSourceMaps(options, sourceMaps) {
     return Promise.all(
-      sourceMaps.map(({ url, file, sourceMap }) => (
-        upload({
+      sourceMaps.map(({ url, file, sourceMap }) => {
+        console.log('webpack-bugsnag-plugin: uploading', sourceMap);
+        return upload({
           ...options,
           minifiedUrl: url,
           minifiedFile: file,
           sourceMap: sourceMap,
         })
-      ))
+      })
     );
   }
 
