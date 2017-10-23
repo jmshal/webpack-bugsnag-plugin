@@ -37,8 +37,10 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
     publicPath += /\/$/.test(publicPath) ? '' : '/';
 
     stats.chunks.forEach(chunk => {
-      const [ file ] = chunk.files.filter(file => /\.js$/.test(file));
-      const [ sourceMap ] = chunk.files.filter(file => /\.js\.map$/.test(file));
+
+      const filesWithoutQuery = chunk.files.map(file => this.removeQueryString(file));
+      const [ file ] = filesWithoutQuery.filter(file => /\.js$/.test(file));
+      const [ sourceMap ] = filesWithoutQuery.filter(file => /\.js\.map$/.test(file));
 
       if (sourceMap) {
         sourceMaps.push({
@@ -46,22 +48,40 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
           file: path.resolve(outputPath, file),
           sourceMap: path.resolve(outputPath, sourceMap),
         });
+      } else {
+        console.log('webpack-bugsnag-plugin: no sourcemap found for', file);
       }
     });
 
     return sourceMaps;
   }
 
+  removeQueryString (fileName) {
+    // Part of the challenge here is that '?' is a valid character in
+    // unix file systems. This at least checks for a '?' following the
+    // extension(s) we are interested in.
+    const extensions = ['.js', '.js.map'];
+    let result = fileName;
+    extensions.some(extension => {
+      if (fileName.includes(`${extension}?`)) {
+        result = fileName.split(`${extension}?`)[0] + extension;
+        return true;
+      }
+    });
+    return result;
+  }
+
   uploadSourceMaps(options, sourceMaps) {
     return Promise.all(
-      sourceMaps.map(({ url, file, sourceMap }) => (
-        upload({
+      sourceMaps.map(({ url, file, sourceMap }) => {
+        console.log('webpack-bugsnag-plugin: uploading', sourceMap);
+        return upload({
           ...options,
           minifiedUrl: url,
           minifiedFile: file,
           sourceMap: sourceMap,
         })
-      ))
+      })
     );
   }
 
