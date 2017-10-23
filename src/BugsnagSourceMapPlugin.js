@@ -2,6 +2,8 @@ import path from 'path';
 import CommonBugsnagPlugin from './helpers/CommonBugsnagPlugin';
 import { upload } from 'bugsnag-sourcemaps';
 
+const debug = require('debug')('BugsnagSourceMapPlugin');
+
 class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
   constructor({
     apiKey = null,
@@ -37,7 +39,6 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
     publicPath += /\/$/.test(publicPath) ? '' : '/';
 
     stats.chunks.forEach(chunk => {
-
       const filesWithoutQuery = chunk.files.map(file => this.removeQueryString(file));
       const [ file ] = filesWithoutQuery.filter(file => /\.js$/.test(file));
       const [ sourceMap ] = filesWithoutQuery.filter(file => /\.js\.map$/.test(file));
@@ -49,7 +50,7 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
           sourceMap: path.resolve(outputPath, sourceMap),
         });
       } else {
-        console.log('webpack-bugsnag-plugin: no sourcemap found for', file);
+        debug('no sourcemap found for', file);
       }
     });
 
@@ -74,13 +75,13 @@ class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
   uploadSourceMaps(options, sourceMaps) {
     return Promise.all(
       sourceMaps.map(({ url, file, sourceMap }) => {
-        console.log('webpack-bugsnag-plugin: uploading', sourceMap);
+        debug('uploading', sourceMap);
         return upload({
           ...options,
           minifiedUrl: url,
           minifiedFile: file,
           sourceMap: sourceMap,
-        })
+        });
       })
     );
   }

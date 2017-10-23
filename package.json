@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "bugsnag-sourcemaps": "^1.0.1",
+    "debug": "^3.1.0",
     "pkg-up": "1.0.0",
     "request": "^2.79.0",
     "request-promise-native": "^1.0.3"
