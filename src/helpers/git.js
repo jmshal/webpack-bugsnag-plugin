@@ -22,7 +22,7 @@ function getLatestCommitHash(options) {
 }
 
 function getOriginRemoteUrl(options) {
-  return exec(`git remote get-url origin`, options).then(getSafeRepositoryUrl);
+  return exec(`git config --get remote.origin.url`, options).then(getSafeRepositoryUrl);
 }
 
 function getSafeRepositoryUrl(repositoryUrl) {
