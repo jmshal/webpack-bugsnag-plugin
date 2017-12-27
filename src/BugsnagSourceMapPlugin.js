@@ -2,7 +2,7 @@ import path from 'path';
 import CommonBugsnagPlugin from './helpers/CommonBugsnagPlugin';
 import { upload } from 'bugsnag-sourcemaps';
 
-const debug = require('debug')('BugsnagSourceMapPlugin');
+const debug = require('debug')('webpack-bugsnag-plugin:BugsnagSourceMapPlugin');
 
 class BugsnagSourceMapPlugin extends CommonBugsnagPlugin {
   constructor({

@@ -1,6 +1,8 @@
 import request from 'request-promise-native';
 import CommonBugsnagPlugin from './helpers/CommonBugsnagPlugin';
 
+const debug = require('debug')('webpack-bugsnag-plugin:BugsnagDeployPlugin');
+
 const USER_AGENT = (
   'WebpackBugsnagDeployPlugin/' +
   require('../package.json').version
@@ -63,6 +65,7 @@ class BugsnagDeployPlugin extends CommonBugsnagPlugin {
   }
 
   sendDeployRequest(options) {
+    debug('uploading deployment details', options);
     return request({
       method: 'POST',
       uri: BUGSNAG_DEPLOY_URL,
